@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/fonts/FontAwesome.otf</file>
+        <file>resources/images/Add-icon (1).png</file>
+        <file>resources/images/arrow-right.png</file>
+        <file>resources/images/Delete-icon.png</file>
+        <file>resources/images/icons.png</file>
+        <file>resources/images/loader.gif</file>
+        <file>stylesheets/stylesheet.css</file>
+    </qresource>
+</RCC>
