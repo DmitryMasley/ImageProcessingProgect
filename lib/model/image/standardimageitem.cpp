@@ -50,17 +50,17 @@ bool StandardImageItem::isMultichannel(){
 void StandardImageItem::setIsMultichannel(bool value){
     _isMultiChannel = value;
 }
-Mat StandardImageItem::getCVImage()
+cv::Mat StandardImageItem::getCVImage()
 {
-    Mat image;
-    QVariant imageValue = data(1, 0);
+    cv::Mat image;
+    QVariant imageValue = data(2, 0);
     if(imageValue.isValid())
     {
-        image = data(2, 0).value<Mat>();
+        image = data(2, 0).value<cv::Mat>();
     }
     return image;
 }
-void StandardImageItem::setCVImage(Mat image)
+void StandardImageItem::setCVImage(cv::Mat image)
 {
     setData(2, QVariant::fromValue(image), 0);
     QImage* _qimage = ImageHelper::convertToQImage(image);
@@ -99,14 +99,14 @@ void StandardImageItem::onChildrenChanged()
     {
         if(count == 4 || count == 3)
         {
-            Mat image;
-            Mat firstChannel = static_cast<StandardImageItem*>(child(0))->getCVImage();
+            cv::Mat image;
+            cv::Mat firstChannel = static_cast<StandardImageItem*>(child(0))->getCVImage();
             int rows = firstChannel.rows;
             int cols = firstChannel.cols;
-            vector<Mat> channels;
+            vector<cv::Mat> channels;
             for(int i = 0; i<count; i++)
             {
-                Mat channel;
+                cv::Mat channel;
                 channel = static_cast<StandardImageItem*>(child(i))->getCVImage();
                 if(channel.cols != cols || channel.rows != rows)
                 {
@@ -181,6 +181,7 @@ void StandardImageItem::initImageData(Mat image, QString name, QString fileName)
     //item title
     setData(0, name, Qt::DisplayRole);
     setData(0, icon, Qt::DecorationRole);
+    setData(0, fileName, Qt::ToolTipRole);
 
     //file data
     setData(1, fileName, Qt::DisplayRole);

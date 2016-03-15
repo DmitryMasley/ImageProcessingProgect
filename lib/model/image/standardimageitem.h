@@ -9,9 +9,11 @@
 #include <opencv2/imgproc/imgproc_c.h>
 #include <opencv2/core/mat.hpp>
 #include <helpers/imagehelper.h>
+#include <helpers/viewhelper.h>
 #include <QIcon>
 #include <QSize>
 #include "lib/metatypes.h"
+#include <QAction>
 using namespace cv;
 class StandardImageItem : public AbstractItem
 {

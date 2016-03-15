@@ -9,6 +9,7 @@
 #include "standardimageitem.h"
 #include <QFileInfo>
 #include <QUrl>
+#include "imageparametersmodel.h"
 
 class StandardImageModel : public StandardModel
 {
@@ -19,9 +20,11 @@ public:
     void AddBlankItem();
     void AddMultichannelImage(const cv::Mat image, const QString fileName);
     void AddImage(const cv::Mat image, const QString fileName);
+    void CloseImage(QModelIndex index);
     StandardImageItem* findImage(QString fileName);
     void addCustomData(QMimeData *data, const QModelIndexList indexes) const;
     QStringList mimeTypes() const;
+    ImageParametersModel* parmsModel;
 signals:
 
 public slots:

@@ -1,6 +1,6 @@
 #include "imagemergingcontroller.h"
 
-ImageMergingController::ImageMergingController(QObject *parent) : QObject(parent)
+ImageMergingController::ImageMergingController(StandardImageModel* model, cv::Mat panImage, QObject *parent) : QObject(parent)
 {
 
 }

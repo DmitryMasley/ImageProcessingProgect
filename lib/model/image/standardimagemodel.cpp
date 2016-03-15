@@ -66,9 +66,9 @@ void StandardImageModel::addCustomData(QMimeData *data, const QModelIndexList in
     foreach (QModelIndex index, indexes) {
         StandardImageItem* item = static_cast<StandardImageItem*>(getItem(index));
         QVariant name = item->getFileName();
-//        if(!name.isNull() && name.isValid()){
-//            urlsList.append(QUrl(name.toString()));
-//        }
+        if(!name.isNull() && name.isValid()){
+            urlsList.append(QUrl(name.toString()));
+        }
     }
     data->setUrls(urlsList);
 }
@@ -102,4 +102,11 @@ QStringList StandardImageModel::mimeTypes() const{
        types << "image/tiff" << "image/png" << "image:jpeg" << "text/uri-list";
     }
     return types;
+}
+void StandardImageModel::CloseImage(QModelIndex index){
+    if(index.parent().isValid()){
+        this->removeItem(index.parent());
+    } else {
+        this->removeItem(index);
+    }
 }

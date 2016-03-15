@@ -28,7 +28,14 @@ SOURCES += main.cpp\
     helpers/viewhelper.cpp \
     lib/views/materialbutton.cpp \
     views/tasksview.cpp \
-    views/imageMerging/imagemergingview.cpp
+    views/imageMerging/imagemergingview.cpp \
+    lib/views/imageitemdelegate.cpp \
+    lib/model/image/imageparametersmodel.cpp \
+    lib/vent.cpp \
+    lib/views/singleimageview.cpp \
+    views/imageMerging/mergeresultview.cpp \
+    views/imageMerging/imagemergingcontroller.cpp \
+    controllers/imagemergingworker.cpp
 
 HEADERS  += mainwindow.h \
     helpers/imagehelper.h \
@@ -46,10 +53,18 @@ HEADERS  += mainwindow.h \
     helpers/viewhelper.h \
     lib/views/materialbutton.h \
     views/tasksview.h \
-    views/imageMerging/imagemergingview.h
+    views/imageMerging/imagemergingview.h \
+    lib/views/imageitemdelegate.h \
+    lib/model/image/imageparametersmodel.h \
+    lib/vent.h \
+    lib/views/singleimageview.h \
+    views/imageMerging/mergeresultview.h \
+    views/imageMerging/imagemergingcontroller.h \
+    controllers/imagemergingworker.h
 
 FORMS    += mainwindow.ui
 INCLUDEPATH += "C:/opencv/build/include"
+LIBS += -L"C:/opencv/build-current/lib" -opencv
 LIBS += "C:/opencv/build-current/lib/libopencv_calib3d300.dll.a"
 LIBS += "C:/opencv/build-current/lib/libopencv_core300.dll.a"
 LIBS += "C:/opencv/build-current/lib/libopencv_features2d300.dll.a"

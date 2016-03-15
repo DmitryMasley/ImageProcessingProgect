@@ -11,7 +11,7 @@
 #include "helpers/imagehelper.h"
 #include <QGraphicsDropShadowEffect>
 #include "lib/views/materialbutton.h"
-
+#include "lib/views/imageitemdelegate.h"
 class Workspace : public QWidget
 {
     Q_OBJECT
@@ -19,7 +19,8 @@ public:
     explicit Workspace(QWidget *parent = 0);
     QTreeView* imageTreeView;
     StandardImageModel* mainModel;
-    QPushButton* addImageButton;
+    MaterialButton* addImageButton;
+    MaterialButton* removeImageBtn;
     ~Workspace();
 
 signals:
@@ -27,6 +28,7 @@ signals:
 public slots:
     void addImage();
     void showImage(QModelIndex);
+    void removeSelectedImage();
 private:
     void initEvents();
 };

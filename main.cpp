@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     viewHelper::setQtAwesome(new QtAwesome(QApplication::instance()));
     viewHelper::awesome->initFontAwesome();
     MainWindow w;
+
     w.show();
     QFile file(":/stylesheets/stylesheet.css");
         if(file.open(QIODevice::ReadOnly | QIODevice::Text))

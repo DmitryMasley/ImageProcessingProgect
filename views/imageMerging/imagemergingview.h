@@ -5,6 +5,13 @@
 #include "lib/views/materialbutton.h"
 #include <QGridLayout>
 #include "helpers/viewhelper.h"
+#include <QApplication>
+#include <lib/vent.h>
+#include <QTreeView>
+#include <QLabel>
+#include <lib/views/singleimageview.h>
+#include <lib/model/image/standardimagemodel.h>
+#include "./mergeresultview.h"
 
 class ImageMergingView : public QWidget
 {
@@ -17,6 +24,12 @@ signals:
     void back(QWidget* widget);
 public slots:
     void goBack();
+    void addImage();
+    void removeImage();
+    void getResult();
+private:
+    StandardImageModel* sourceModel;
+    SingleImageView* panImageView;
 };
 
 #endif // IMAGEMERGINGVIEW_H

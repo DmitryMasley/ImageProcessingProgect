@@ -1,12 +1,16 @@
 #include "vent.h"
-
-Vent::Vent(QObject *parent) : QObject(parent)
-{
-
-}
+bool Vent::flag = false;
+Vent* Vent::instance = NULL;
 
 Vent::~Vent()
 {
-
+    flag = false;
 }
 
+Vent* Vent::getInstance(){
+    if(!flag){
+        instance = new Vent();
+        flag = true;
+    }
+    return instance;
+}

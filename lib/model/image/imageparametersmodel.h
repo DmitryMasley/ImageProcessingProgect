@@ -2,8 +2,9 @@
 #define IMAGEPARAMETERSMODEL_H
 
 #include <QObject>
+#include "../standardmodel.h"
 
-class ImageParametersModel : public QObject
+class ImageParametersModel : public StandardModel
 {
     Q_OBJECT
 public:

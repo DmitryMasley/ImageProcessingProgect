@@ -1,6 +1,6 @@
 #include "imagehelper.h"
 #include <opencv2/core.hpp>
-#include "opencv2\core\types_c.h"
+#include "opencv2/core/types_c.h"
 #include <cmath>
 using namespace std;
 

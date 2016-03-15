@@ -2,12 +2,20 @@
 #define IMAGEMERGINGCONTROLLER_H
 
 #include <QObject>
+#include <lib/model/image/standardimagemodel.h>
+#include <helpers/imagehelper.h>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/cuda.hpp>
+#include <QString>
+#include <QImage>
+#include <QIcon>
+#include <QPixmap>
 
 class ImageMergingController : public QObject
 {
     Q_OBJECT
 public:
-    explicit ImageMergingController(QObject *parent = 0);
+    explicit ImageMergingController(StandardImageModel* model, cv::Mat panImage, QObject *parent = 0);
     ~ImageMergingController();
 
 signals:

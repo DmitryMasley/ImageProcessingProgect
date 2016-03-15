@@ -61,7 +61,7 @@ int AbstractItem::columnCount() const
 }
 QVariant AbstractItem::data(int column, int role) const
 {
-    if (column < _data.size() &&  role < _data.value(column).size())
+    if (_data.contains(column) &&  _data.value(column).contains(role))
     {
         return _data.value(column).value(role, QVariant());
     }

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "../abstractitem.h"
+#include "../standardmodel.h"
 
 class ImageParameter : public AbstractItem
 {

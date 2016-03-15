@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
     TasksView* tasks = new TasksView(this);
     QHBoxLayout* layout = new QHBoxLayout();
     ui->centralWidget->setLayout(layout);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(tasks);
 
 

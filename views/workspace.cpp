@@ -13,24 +13,24 @@ Workspace::Workspace(QWidget *parent) : QWidget(parent)
     addImageButton->setObjectName(QStringLiteral("workspace_add_image"));
     gridLayout->addWidget(addImageButton, 0, 0, 1, 1);
 
-    MaterialButton* newButton = new MaterialButton(tr("Test"), this);
-    newButton->setObjectName(QStringLiteral("newButton"));
-    gridLayout->addWidget(newButton, 0, 1, 1, 1);
+    removeImageBtn = new MaterialButton(tr("Remove"), this);
+    removeImageBtn->setObjectName(QStringLiteral("workspace_remove_image"));
+    gridLayout->addWidget(removeImageBtn, 0, 1, 1, 1);
 
     imageTreeView = new QTreeView(this);
     imageTreeView->setObjectName(QStringLiteral("workspace_tree_view"));
     imageTreeView->setIconSize(QSize(40, 40));
-    imageTreeView->setHeaderHidden(false);
+    imageTreeView->setHeaderHidden(true);
     imageTreeView->setAcceptDrops(true);
     imageTreeView->viewport()->setAcceptDrops(true);
     imageTreeView->setDropIndicatorShown(true);
     imageTreeView->setDragEnabled(true);
+    imageTreeView->setItemDelegate(new ImageItemDelegate(imageTreeView));
     gridLayout->addWidget(imageTreeView, 1, 0, 1, 2);
 
 
     mainModel = new StandardImageModel(imageTreeView);
-    mainModel->root()->setData(0, QString("Image Name"), Qt::DisplayRole);
-        mainModel->root()->setData(1, QString("File"), Qt::DisplayRole);
+    mainModel->root()->setData(0, tr("Image Name"), Qt::DisplayRole);
     mainModel->setCanAcceptFiles(true);
     imageTreeView->setModel(mainModel);
 
@@ -44,6 +44,7 @@ Workspace::~Workspace()
 void Workspace::initEvents(){
     QObject::connect(addImageButton, SIGNAL(clicked()), this, SLOT(addImage()));
     QObject::connect(imageTreeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showImage(QModelIndex)));
+    QObject::connect(removeImageBtn, SIGNAL(clicked()), this, SLOT(removeSelectedImage()));
 }
 
 void Workspace::addImage(){
@@ -63,4 +64,12 @@ void Workspace::showImage(QModelIndex index){
     QString name = item->getFileName();
     cv::namedWindow(ImageHelper::convertToStdString(name));
     cv::imshow(ImageHelper::convertToStdString(name), ImageHelper::RGB2BGR(image));
+}
+void Workspace::removeSelectedImage(){
+    QModelIndexList indexes = imageTreeView->selectionModel()->selectedRows();
+    foreach (QModelIndex index, indexes) {
+        if(index.isValid()){
+            mainModel->CloseImage(index);
+        }
+    }
 }

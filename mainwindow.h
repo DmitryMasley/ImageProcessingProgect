@@ -6,7 +6,7 @@
 #include <QDockWidget>
 #include <QFontDatabase>
 #include <opencv2/core.hpp>
-#include "opencv2\core\types_c.h"
+#include "opencv2/core/types_c.h"
 #include "lib/metatypes.h"
 #include "views/workspace.h"
 #include "helpers/viewhelper.h"
