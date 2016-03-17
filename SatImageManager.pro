@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     lib/views/singleimageview.cpp \
     views/imageMerging/mergeresultview.cpp \
     views/imageMerging/imagemergingcontroller.cpp \
-    controllers/imagemergingworker.cpp
+    controllers/imagemergingworker.cpp \
+    views/imageMerging/imagemergingprocessor.cpp
 
 HEADERS  += mainwindow.h \
     helpers/imagehelper.h \
@@ -59,7 +60,9 @@ HEADERS  += mainwindow.h \
     lib/views/singleimageview.h \
     views/imageMerging/mergeresultview.h \
     views/imageMerging/imagemergingcontroller.h \
-    controllers/imagemergingworker.h
+    controllers/imagemergingworker.h \
+    views/imageMerging/imagemergingprocessor.h \
+    views/imageMerging/imagemerginginputdata.h
 
 FORMS    += mainwindow.ui
 win32 {
