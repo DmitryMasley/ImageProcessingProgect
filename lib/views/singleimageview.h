@@ -1,6 +1,6 @@
 #ifndef SINGLEIMAGEVIEW_H
 #define SINGLEIMAGEVIEW_H
-
+#include <QWidget>
 #include <QObject>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
