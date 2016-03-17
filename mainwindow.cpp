@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    this->setStyleSheet("font-size:16pt");
     qRegisterMetaTypeStreamOperators<QList<QList<QVariant> > >("QList<QList<QVariant> >");
     qRegisterMetaTypeStreamOperators<QMap<int, QMap<int, QVariant> > >("QMap<int, QMap<int, QVariant> >");
 
@@ -42,12 +43,6 @@ MainWindow::MainWindow(QWidget *parent) :
     dock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     addDockWidget(Qt::LeftDockWidgetArea, dock);
     dock->setWidget(dockWidgetContents);
-
-    QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect(dock);
-    shadow->setXOffset(0);
-    shadow->setYOffset(2);
-    shadow->setBlurRadius(10);
-    dock->setGraphicsEffect(shadow);
 
     TasksView* tasks = new TasksView(this);
     QHBoxLayout* layout = new QHBoxLayout();

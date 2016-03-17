@@ -28,6 +28,12 @@ Workspace::Workspace(QWidget *parent) : QWidget(parent)
     imageTreeView->setItemDelegate(new ImageItemDelegate(imageTreeView));
     gridLayout->addWidget(imageTreeView, 1, 0, 1, 2);
 
+    QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect(imageTreeView);
+    shadow->setXOffset(0);
+    shadow->setYOffset(2);
+    shadow->setBlurRadius(10);
+    imageTreeView->setGraphicsEffect(shadow);
+
 
     mainModel = new StandardImageModel(imageTreeView);
     mainModel->root()->setData(0, tr("Image Name"), Qt::DisplayRole);
