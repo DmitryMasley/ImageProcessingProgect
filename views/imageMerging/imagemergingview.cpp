@@ -19,18 +19,18 @@ ImageMergingView::ImageMergingView(QWidget *parent) : QWidget(parent)
     sourceModel->setCanAcceptFiles(true);
     sources->setModel(sourceModel);
     // pan image single view
-    SingleImageView* panImageView = new SingleImageView(true, this);
+    panImageView = new SingleImageView(true, this);
     panImageView->setAcceptDrops(true);
     // buttons
     MaterialButton* add = new MaterialButton(tr("Select Image"), this);
-    add->setIcon(viewHelper::awesome->icon(fa::folder));
+    add->setIcon(viewHelper::awesome->icon(fa::folder).pixmap(100, 100));
     MaterialButton* remove = new MaterialButton(tr("Remove Selected"), this);
-    remove->setIcon(viewHelper::awesome->icon(fa::remove));
-    MaterialButton* result = new MaterialButton("", this);
-    result->setIcon(viewHelper::awesome->icon(fa::arrowright));
-    result->setIconSize(QSize(60, 60));
+    remove->setIcon(viewHelper::awesome->icon(fa::remove).pixmap(100, 100));
+    MaterialButton* result = new MaterialButton("Start", this);
+    result->setLayoutDirection(Qt::RightToLeft);
+    result->setIcon(viewHelper::awesome->icon(fa::arrowright).pixmap(100, 100));
     QLabel* plusLabel = new QLabel(this);
-    plusLabel->setPixmap(viewHelper::awesome->icon(fa::plus).pixmap(60, 60));
+    plusLabel->setPixmap(viewHelper::awesome->icon(fa::plus).pixmap(30, 30));
 
     this->setLayout(layout);
     layout->addWidget(add, 0, 0, 1, 1);
@@ -47,7 +47,6 @@ ImageMergingView::ImageMergingView(QWidget *parent) : QWidget(parent)
     viewHelper::addShadow(sources);
     viewHelper::addShadow(plusLabel);
     viewHelper::addShadow(panImageView);
-    result->setFlat(true);
 }
 
 ImageMergingView::~ImageMergingView()
@@ -75,6 +74,7 @@ void ImageMergingView::getResult(){
     if(sourceModel->rowCount()){
         MergeResultView* window = new MergeResultView(QApplication::topLevelWidgets().first());
         window->show();
+        window->raise();
         window->run(sourceModel, this->panImageView->getCVImage());
     }
 }

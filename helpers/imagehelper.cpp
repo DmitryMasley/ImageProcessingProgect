@@ -2,6 +2,7 @@
 #include <opencv2/core.hpp>
 #include "opencv2/core/types_c.h"
 #include <cmath>
+#include <QtDebug>
 using namespace std;
 
 
@@ -120,9 +121,9 @@ using namespace std;
             result.Q.col(j) = result.Q.col(j)/result.R.at<float>(j ,j);
             for (int k=j+1; k<Width;k++)
             {
-                cv::Mat temp = result.Q.col(j).t()*result.Q.col(k);
+                cv::Mat temp = result.Q.col(j).t() * result.Q.col(k);
                 int rows = temp.rows; int cols = temp.cols;
-                result.R.at<float>(j ,k)=	temp.at<float>(0, 0);
+                result.R.at<float>(j ,k) = temp.at<float>(0, 0);
                 result.Q.col(k) = result.Q.col(k)-result.R.at<float>(j ,k)*result.Q.col(j);
             }
         }

@@ -53,14 +53,17 @@ void TasksView::showView(QModelIndex index){
     switch(typeName){
     case TasksView::IMAGE_MERGING:
         view = new ImageMergingView(this);
-        view->setObjectName("task");
-        layout->addWidget(view);
-        this->slideInNext();
         break;
     case TasksView::IMAGE_PROPERTIES:
-        this->slideInNext();
+        view = new ImageSnapView(this);
+        break;
+    case TasksView::IMAGE_SNAP:
+        view = new ImageSnapView(this);
         break;
     }
+    view->setObjectName("task");
+    layout->addWidget(view);
+    this->slideInNext();
 }
 void TasksView::back(){
     this->slideInPrev();
@@ -79,7 +82,12 @@ StandardModel* TasksView::getListModel(){
     QIcon propertiesIcon = viewHelper::awesome->icon(fa::barcharto, options);
     this->addItemToModel(model, propertiesIcon, tr("Image Properties"),  TasksView::IMAGE_PROPERTIES);
     //
-
+    // Snap
+    QVariantMap snapOptions;
+    snapOptions.insert("color" , QColor("#8BC34A"));
+    QIcon snapIcon = viewHelper::awesome->icon(fa::map, snapOptions);
+    this->addItemToModel(model, snapIcon, tr("Image Snap"),  TasksView::IMAGE_SNAP);
+    //
     return model;
 }
 QIcon TasksView::getImageMergingIcon(){

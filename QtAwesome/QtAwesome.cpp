@@ -169,7 +169,7 @@ bool QtAwesome::initFontAwesome( )
         Q_INIT_RESOURCE(QtAwesome);
 
         // load the font file
-        QFile res(":/fonts/fontawesome-4.3.0.ttf");
+        QFile res(":/fonts/fontawesome-webfont.ttf");
         if(!res.open(QIODevice::ReadOnly)) {
             qDebug() << "Font awesome font could not be loaded!";
             return false;
@@ -523,6 +523,7 @@ bool QtAwesome::initFontAwesome( )
     m.insert("mailreplyall",        fa::mailreplyall);
     m.insert("male",                fa::male);
     m.insert("mapmarker",           fa::mapmarker);
+    m.insert("map",                 fa::map);
     m.insert("mars",                fa::mars);
     m.insert("marsdouble",          fa::marsdouble);
     m.insert("marsstroke",          fa::marsstroke);

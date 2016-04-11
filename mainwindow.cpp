@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setStyleSheet("font-size:16pt");
     qRegisterMetaTypeStreamOperators<QList<QList<QVariant> > >("QList<QList<QVariant> >");
     qRegisterMetaTypeStreamOperators<QMap<int, QMap<int, QVariant> > >("QMap<int, QMap<int, QVariant> >");
+    qRegisterMetaType<QMap<QString,cv::Mat> >("QMap<QString,cv::Mat>");
 
      workspaceController - new WorkspaceController();
 //    qRegisterMetaTypeStreamOperators<cv::Mat>("Mat");
@@ -24,11 +25,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QVariantMap options;
 
-    options.insert("color" , QColor("#45ff05"));
-    QList<QAction *> actionsList;
-    QAction* action = new QAction(viewHelper::awesome->icon(fa::plus, options), QString("Add File"), this);
-    actionsList << action;
-    ui->mainToolBar->addActions(actionsList);
+//    options.insert("color" , QColor("#45ff05"));
+//    QList<QAction *> actionsList;
+//    QAction* action = new QAction(viewHelper::awesome->icon(fa::plus, options), QString("Add File"), this);
+//    actionsList << action;
+//    ui->mainToolBar->addActions(actionsList);
 
     QDockWidget* dock = new QDockWidget(tr("Workspace"), this);
     Workspace* workspace = new Workspace(dock);

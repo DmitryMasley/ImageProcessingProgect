@@ -9,6 +9,7 @@
 #include "lib/model/standardmodel.h"
 #include "QStringListModel"
 #include "views/imageMerging/imagemergingview.h"
+#include "views/imageSnap/imagesnapview.h"
 #include <QHBoxLayout>
 #include <helpers/viewhelper.h>
 #include <lib/vent.h>
@@ -25,7 +26,8 @@ public:
     QGridLayout* layout;
     enum TasksEnum {
         IMAGE_MERGING = 0,
-        IMAGE_PROPERTIES = 1
+        IMAGE_PROPERTIES = 1,
+        IMAGE_SNAP = 2
     };
 private:
     StandardModel* getListModel();

@@ -8,10 +8,12 @@
 #include <QApplication>
 #include <lib/vent.h>
 #include <QTreeView>
+#include <QTableView>
 #include <QLabel>
 #include <lib/views/singleimageview.h>
 #include <lib/model/image/standardimagemodel.h>
 #include "./mergeresultview.h"
+#include <lib/model/matmodel.h>
 
 class ImageMergingView : public QWidget
 {

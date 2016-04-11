@@ -352,6 +352,7 @@ namespace fa {
     mailreplyall            =           0xf122,
     male                    =           0xf183,
     mapmarker               =           0xf041,
+    map                     =           0xf279,
     mars                    =           0xf222,
     marsdouble              =           0xf227,
     marsstroke              =           0xf229,

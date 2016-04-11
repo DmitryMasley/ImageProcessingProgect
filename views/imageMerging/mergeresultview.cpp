@@ -1,5 +1,9 @@
 #include "mergeresultview.h"
 
+ImageMergingProcessor* MergeResultView::runExecutor(ImageMergingProcessor* p){
+    p->run();
+    return p;
+}
 cv::Mat mergeGrayImages(ImageMergingInputData input){
 
 }
@@ -10,16 +14,26 @@ MergeResultView::MergeResultView(QWidget *parent) : QDialog(parent)
 {
     QGridLayout* layout = new QGridLayout(this);
     this->setLayout(layout);
-    QTreeView* results = new QTreeView(this);
+    results = new QTreeView(this);
+    results->setIconSize(QSize(40, 40));
     viewHelper::addShadow(results);
     resultModel = new StandardImageModel(results);
+    resultModel->root()->setData(0, tr("Image Name"), Qt::DisplayRole);
     results->setModel(resultModel);
 
+    QMovie* m = new QMovie(":/resources/images/ajax-loader.gif");
+    spinner = new QLabel(this);
+    spinner->setMovie(m);
+    spinner->setAlignment(Qt::AlignCenter);
     MaterialButton* save = new MaterialButton(tr("Save"));
     save->setIcon(viewHelper::awesome->icon(fa::save));
 
-    layout->addWidget(results, 0, 0);
-    layout->addWidget(save, 1, 0);
+    layout->addWidget(spinner, 0, 0);
+    layout->addWidget(results, 1, 0);
+    layout->addWidget(save, 2, 0);
+
+    QObject::connect(results, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(showImage(QModelIndex)));
+    QObject::connect(save, SIGNAL(clicked(bool)), this, SLOT(save()));
 }
 
 MergeResultView::~MergeResultView()
@@ -29,6 +43,7 @@ MergeResultView::~MergeResultView()
 void MergeResultView::run(StandardImageModel *model, Mat panImage){
     QMap<QString, cv::Mat> grayImages;
     QMap<QString, cv::Mat> multichannelImages;
+    QList<ImageMergingProcessor*> executorsList;
     foreach(QObject* item, model->root()->children()){
         StandardImageItem* imageItem = qobject_cast<StandardImageItem*>(item);
         cv::Mat image = imageItem->getCVImage();
@@ -46,12 +61,14 @@ void MergeResultView::run(StandardImageModel *model, Mat panImage){
         data.panImage = panImage;
         data.sources = graySources;
         data.names = names;
-        ImageMergingProcessor processor(data, this);
+//        showImageInTable(data.sources);
+        ImageMergingProcessor* processor = new ImageMergingProcessor(data, this);
         QObject::connect(
-                    &processor, SIGNAL(finished(QMap<QString, cv::Mat> resultData)),
+                    processor, SIGNAL(processFinished(QMap<QString,cv::Mat>)),
                     this, SLOT(gotMergeResult(QMap<QString,cv::Mat>))
                     );
-        processor.run();
+        executorsList << processor;
+//        processor->run();
 
     }
     if(multichannelImages.count()>0){
@@ -76,12 +93,25 @@ void MergeResultView::run(StandardImageModel *model, Mat panImage){
             }
             data.names = names;
             i++;
+            ImageMergingProcessor* processor = new ImageMergingProcessor(data, this);
+            QObject::connect(
+                        processor, SIGNAL(processFinished(QMap<QString,cv::Mat>)),
+                        this, SLOT(gotMergeResult(QMap<QString,cv::Mat>))
+                        );
+            executorsList << processor;
+//            processor->run();
         }
     }
+    QFuture<ImageMergingProcessor*> future = QtConcurrent::mapped(executorsList, MergeResultView::runExecutor);
+    QFutureWatcher<ImageMergingProcessor*>* watcher = new QFutureWatcher<ImageMergingProcessor*>();
+    watcher->setFuture(future);
+    QObject::connect(watcher, SIGNAL(progressValueChanged(int)), this, SLOT(progressChange(int)));
+    QObject::connect(watcher, SIGNAL(finished()), this, SLOT(finished()));
+
 }
 cv::Mat MergeResultView::combineSourceImagesIntoMatrix(int cols, int rows, int type, QList<cv::Mat> sources)
 {
-    cv::Mat inputMatrix = cv::Mat::zeros(rows*cols, sources.count()+1, type);
+    cv::Mat inputMatrix = cv::Mat::ones(rows*cols, sources.count()+1, type);
     cv::Mat temp;
     for(int i = 0; i<sources.count(); i++)
     {
@@ -92,7 +122,7 @@ cv::Mat MergeResultView::combineSourceImagesIntoMatrix(int cols, int rows, int t
     return inputMatrix;
 }
 cv::Mat MergeResultView::combineSourceMultichannerlImageIntoMatrix(int cols, int rows, int type, cv::Mat sourceImage){
-    cv::Mat inputMatrix = cv::Mat::zeros(rows*cols, sourceImage.channels()+1, type);
+    cv::Mat inputMatrix = cv::Mat::ones(rows*cols, sourceImage.channels()+1, type);
     cv::Mat temp;
     vector<cv::Mat> imageChannels;
     cv::split(sourceImage, imageChannels);
@@ -105,5 +135,34 @@ cv::Mat MergeResultView::combineSourceMultichannerlImageIntoMatrix(int cols, int
     return inputMatrix;
 }
 void MergeResultView::gotMergeResult(QMap<QString, Mat> resultData){
-    resultData;
+    QMap<QString, cv::Mat>::const_iterator i = resultData.constBegin();
+    while(i != resultData.constEnd()){
+        StandardImageItem* item = new StandardImageItem(i.value(), i.key());
+        this->resultModel->addItem(item);
+        i++;
+    }
+    delete this->sender();
+}
+void MergeResultView::showImage(QModelIndex index){
+    StandardImageItem* item = static_cast<StandardImageItem*>(resultModel->getItem(index));
+    cv::Mat image = item->getCVImage();
+    QString name = item->getFileName();
+    cv::namedWindow(ImageHelper::convertToStdString(name), CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO | CV_GUI_EXPANDED);
+    cv::imshow(ImageHelper::convertToStdString(name), ImageHelper::RGB2BGR(image));
+}
+void MergeResultView::showImageInTable(Mat image){
+//    MatModel* model = new MatModel(image, image.type(), this);
+//    table1->setModel(model);
+}
+void MergeResultView::progressChange(int progress){
+    spinner->movie()->start();
+}
+void MergeResultView::finished(){
+    spinner->movie()->stop();
+    spinner->setText(tr("Complete!"));
+    delete this->sender();
+}
+void MergeResultView::save(){
+    QModelIndexList selected = results->selectionModel()->selectedIndexes();
+    resultModel->getItem(selected.first());
 }

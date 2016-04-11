@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets network  webkit qml quick quickwidgets
+QT       += core gui widgets network  webkit qml quick quickwidgets concurrent webkitwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -35,7 +35,10 @@ SOURCES += main.cpp\
     views/imageMerging/mergeresultview.cpp \
     views/imageMerging/imagemergingcontroller.cpp \
     controllers/imagemergingworker.cpp \
-    views/imageMerging/imagemergingprocessor.cpp
+    views/imageMerging/imagemergingprocessor.cpp \
+    lib/model/matmodel.cpp \
+    lib/model/matmodelitem.cpp \
+    views/imageSnap/imagesnapview.cpp
 
 HEADERS  += mainwindow.h \
     helpers/imagehelper.h \
@@ -62,7 +65,10 @@ HEADERS  += mainwindow.h \
     views/imageMerging/imagemergingcontroller.h \
     controllers/imagemergingworker.h \
     views/imageMerging/imagemergingprocessor.h \
-    views/imageMerging/imagemerginginputdata.h
+    views/imageMerging/imagemerginginputdata.h \
+    lib/model/matmodel.h \
+    lib/model/matmodelitem.h \
+    views/imageSnap/imagesnapview.h
 
 FORMS    += mainwindow.ui
 win32 {
