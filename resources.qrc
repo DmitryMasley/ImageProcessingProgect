@@ -8,5 +8,8 @@
         <file>resources/images/loader.gif</file>
         <file>stylesheets/stylesheet.css</file>
         <file>resources/images/ajax-loader.gif</file>
+        <file>views/imageSnap/index.html</file>
+        <file>views/imageSnap/js/src/main.js</file>
+        <file>views/imageSnap/js/build/main.bundle.js</file>
     </qresource>
 </RCC>

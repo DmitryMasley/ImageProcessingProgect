@@ -23,6 +23,7 @@ public:
     ~SingleImageView();
     bool _gray=false;
     void showImage(QImage* img);
+    void showImage(Mat cvImg);
     void resizeEvent(QResizeEvent *event);
     void dragEnterEvent(QDragEnterEvent * event);
     void dragMoveEvent(QDragMoveEvent *event);
@@ -30,9 +31,12 @@ public:
     void wheelEvent(QWheelEvent *event);
     void fitImage();
     cv::Mat getCVImage();
+    void readImage(QString fileName);
+    void setZoomEnabled(bool value);
 private slots:
     void fitIntoView();
 private:
+    bool _zoomEnabled = false;
     Mat cvImage;
     QString imageName;
     qreal h11 = 1.0;
@@ -47,6 +51,7 @@ private:
     void showPreview(QImage* img);
 signals:
     void imageChanged(Mat image);
+    void showImageError(QString error);
 };
 
 #endif // SINGLEIMAGEVIEW_H

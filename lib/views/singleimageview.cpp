@@ -9,6 +9,11 @@ SingleImageView::SingleImageView(bool gray, QWidget* w):QGraphicsView(w)
     QGraphicsScene* scene = new QGraphicsScene();
     this->setDragMode(QGraphicsView::ScrollHandDrag);
     this->setScene(scene);
+
+    this->scene()->addSimpleText("Drag and drop image here");
+    this->setZoomEnabled(false);
+//    cv::Mat image = ImageHelper::loadFromQrc(":/resources/images/icons.png", _gray ? cv::IMREAD_GRAYSCALE : cv::IMREAD_COLOR);
+//    this->showImage(image);
 }
 SingleImageView::SingleImageView(QWidget* w) : SingleImageView(false, w)
 {
@@ -16,9 +21,6 @@ SingleImageView::SingleImageView(QWidget* w) : SingleImageView(false, w)
 }
 SingleImageView::~SingleImageView()
 {
-    if(currentImage !=0){
-        delete currentImage;
-    }
     delete this->scene();
 }
 void SingleImageView::fitIntoView()
@@ -27,6 +29,7 @@ void SingleImageView::fitIntoView()
 }
 void SingleImageView::showPreview(QImage* img)
 {
+    this->setZoomEnabled(true);
     currentImage = img;
     QList<QGraphicsItem*> items =  this->scene()->items(); int count = items.count();
     QMutableListIterator <QGraphicsItem*> i(items);
@@ -46,6 +49,12 @@ void SingleImageView::showImage(QImage *img)
 {
     this->showPreview(img);
 }
+void SingleImageView::showImage(cv::Mat cvImg){
+    cvImage = cvImg;
+    showPreview(ImageHelper::convertToQImage(cvImage));
+    emit this->imageChanged(cvImage);
+}
+
 void SingleImageView::fitImage()
 {
     if(currentImage)
@@ -113,39 +122,49 @@ void SingleImageView::dropEvent(QDropEvent *event)
         QString fileName = url.toLocalFile();
         if(!fileName.isEmpty() && QFileInfo(fileName).exists())
         {
-            QRegExp regex = QRegExp(SingleImageView::fileExtentions);
-            if(regex.exactMatch(fileName))
-            {
-                cv::Mat image = ImageHelper::readImage(fileName);
-                if(!!image.data && (!_gray || image.channels() == 1))
-                {
-                    cvImage = image;
-                    showPreview(ImageHelper::convertToQImage(cvImage));
-                    emit this->imageChanged(cvImage);
-                }
-            }
+           this->readImage(fileName);
 
         }
+    }
+}
+void SingleImageView::readImage(QString fileName){
+    QRegExp regex = QRegExp(SingleImageView::fileExtentions);
+    if(regex.exactMatch(fileName))
+    {
+        cv::Mat image = ImageHelper::readImage(fileName);
+        if(!!image.data && (!_gray || image.channels() == 1))
+        {
+            cvImage = image;
+            showPreview(ImageHelper::convertToQImage(cvImage));
+            emit this->imageChanged(cvImage);
+        }
+    } else {
+        emit this->showImageError(tr("Image format not supported"));
     }
 }
 
 void SingleImageView::wheelEvent(QWheelEvent *event)
 {
-    const int degrees = event->delta();
-    int steps  = degrees;
-    if(steps>0)
-    {
-        h11 = (h11 >= maxFactor) ? h11 : (h11*scaleFactor);
-        h22 = (h22 >= maxFactor) ? h22 : (h22*scaleFactor);
+    if(_zoomEnabled){
+        const int degrees = event->delta();
+        int steps  = degrees;
+        if(steps>0)
+        {
+            h11 = (h11 >= maxFactor) ? h11 : (h11*scaleFactor);
+            h22 = (h22 >= maxFactor) ? h22 : (h22*scaleFactor);
+        }
+        else
+        {
+            h11 = (h11 <= minFactor) ? minFactor : (h11/scaleFactor);
+            h22 = (h22 <= minFactor) ? minFactor : (h22/scaleFactor);
+        }
+        this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+        this->setTransform(QTransform(h11, h12, h21, h22, 0, 0));
     }
-    else
-    {
-        h11 = (h11 <= minFactor) ? minFactor : (h11/scaleFactor);
-        h22 = (h22 <= minFactor) ? minFactor : (h22/scaleFactor);
-    }
-    this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    this->setTransform(QTransform(h11, h12, h21, h22, 0, 0));
 }
 cv::Mat SingleImageView::getCVImage(){
     return cvImage;
+}
+void SingleImageView::setZoomEnabled(bool value){
+    _zoomEnabled = value;
 }

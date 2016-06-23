@@ -2,6 +2,8 @@
 #define VENT_H
 
 #include <QObject>
+#include <QVariant>
+#include <QString>
 
 
 class Vent : public QObject
@@ -18,6 +20,7 @@ private:
      }
 signals:
     void TASKS_BACK_TO_LIST(QWidget*);
+    void dispatch(QString eventName, QVariant data);
 public slots:
 
 };

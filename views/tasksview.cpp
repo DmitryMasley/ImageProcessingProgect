@@ -12,6 +12,7 @@ TasksView::TasksView(QWidget *parent) : SlidingStackedWidget(parent)
     button->setIcon(viewHelper::awesome->icon(fa::arrowleft));
     layout->addWidget(button, 0, 0, 1, 2);
     layout->setContentsMargins(10, 10, 0, 0);
+    // set auto size by inner text
     button->setSizePolicy(QSizePolicy());
 
     QWidget* content = new QWidget(this);

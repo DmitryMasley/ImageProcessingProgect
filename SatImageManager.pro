@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     views/imageMerging/imagemergingprocessor.cpp \
     lib/model/matmodel.cpp \
     lib/model/matmodelitem.cpp \
-    views/imageSnap/imagesnapview.cpp
+    views/imageSnap/imagesnapview.cpp \
+    controllers/imageSnap/webpageconnector.cpp
 
 HEADERS  += mainwindow.h \
     helpers/imagehelper.h \
@@ -68,7 +69,9 @@ HEADERS  += mainwindow.h \
     views/imageMerging/imagemerginginputdata.h \
     lib/model/matmodel.h \
     lib/model/matmodelitem.h \
-    views/imageSnap/imagesnapview.h
+    views/imageSnap/imagesnapview.h \
+    controllers/imageSnap/webpageconnector.h \
+    modules/imageSnap/imagesnapcontroller.h
 
 FORMS    += mainwindow.ui
 win32 {
@@ -285,3 +288,7 @@ macx {
 RESOURCES += \
     resources.qrc
 include(./QtAwesome/QtAwesome.pri)
+
+DISTFILES += \
+    views/imageSnap/index.html \
+    views/imageSnap/package.json

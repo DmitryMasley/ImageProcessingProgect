@@ -767,3 +767,22 @@ double ImageHelper::psnr(cv::Mat img1, cv::Mat img2)
     cv::minMaxLoc(img1, NULL, &max);
     return 10.0*std::log10(std::pow(max, 2.0)/mean.val[0]);
 }
+cv::Mat ImageHelper::loadFromQrc(QString qrc, int flag)
+{
+    //double tic = double(getTickCount());
+
+    QFile file(qrc);
+    cv::Mat m;
+    if(file.open(QIODevice::ReadOnly))
+    {
+        qint64 sz = file.size();
+        std::vector<uchar> buf(sz);
+        file.read((char*)buf.data(), sz);
+        m = cv::imdecode(buf, flag);
+    }
+
+    //double toc = (double(getTickCount()) - tic) * 1000.0 / getTickFrequency();
+    //qDebug() << "OpenCV loading time: " << toc;
+
+    return m;
+}
