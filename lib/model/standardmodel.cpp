@@ -310,7 +310,7 @@ void StandardModel::insertItem(int row, AbstractItem *itemToCopy, QModelIndex pa
     QModelIndex item;
     if(parent.isValid())
     {
-        item = parent.child(row, 0);
+        item = parent.sibling(row, 0);
     }
     else
     {

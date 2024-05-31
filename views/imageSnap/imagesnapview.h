@@ -2,11 +2,10 @@
 #define IMAGESNAPVIEW_H
 
 #include <QWidget>
-#include <QWebView>
+#include <QWebEngineView>
 #include "lib/views/singleimageview.h"
 #include <QGridLayout>
-#include <QWebFrame>
-#include <QWebPage>
+#include <QWebEnginePage>
 #include <QPainter>
 #include "helpers/viewhelper.h"
 #include "controllers/imageSnap/webpageconnector.h"
@@ -27,7 +26,7 @@ public slots:
     void goToImgeView();
 private:
     WebPageConnector* connector;
-    QWebView* webView;
+    QWebEngineView* webView;
     SingleImageView* mapImageView;
     SingleImageView* targetImageView;
     QImage* renderedPage=0;

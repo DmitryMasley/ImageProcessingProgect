@@ -1,4 +1,5 @@
 #include "standardimagemodel.h"
+#include <QRegularExpression>
 
 StandardImageModel::StandardImageModel(QObject *parent) :
     StandardModel(parent)
@@ -79,8 +80,8 @@ bool StandardImageModel::readFiles(QList<QUrl> files){
         QString fileName = url.toLocalFile();
         if(!fileName.isEmpty() && QFileInfo(fileName).exists())
         {
-            QRegExp regex = QRegExp(this->fileExtentions);
-            if(regex.exactMatch(fileName))
+            QRegularExpression regex = QRegularExpression(this->fileExtentions);
+            if(regex.match(fileName).hasMatch())
             {
                 cv::Mat image = ImageHelper::readImage(fileName);
                 if(!!image.data)

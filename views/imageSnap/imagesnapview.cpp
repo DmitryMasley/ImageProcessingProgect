@@ -7,7 +7,7 @@ ImageSnapView::ImageSnapView(QWidget *parent) : SlidingStackedWidget(parent)
     setVerticalMode(true);
     this->createMapView();
     this->createImagesView();
-    this->createResultView();
+    // this->createResultView();
 
 }
 ImageSnapView::~ImageSnapView(){
@@ -24,7 +24,7 @@ void ImageSnapView::createMapView(){
     view->setLayout(layout);
 
     connector = new WebPageConnector(this);
-    webView = new QWebView(this);
+    webView = new QWebEngineView(this);
 
     layout->addWidget(webView, 0, 0, 1, 2);
     MaterialButton* button = new MaterialButton(QString("Select Image"));
@@ -35,7 +35,7 @@ void ImageSnapView::createMapView(){
     webView->load(QUrl("qrc:/views/imageSnap/index.html"));
     QObject::connect(button, SIGNAL(clicked(bool)), this, SLOT(goToImgeView()));
 
-    webView->page()->mainFrame()->addToJavaScriptWindowObject("connector", connector);
+    // webView->page()->addToJavaScriptWindowObject("connector", connector);
 }
 void ImageSnapView::goToImgeView(){
     this->slideInNext();
@@ -70,16 +70,17 @@ void ImageSnapView::createImagesView(){
 }
 
 void ImageSnapView::mainFrame_javaScriptWindowObjectCleared() {
-    webView->page()->mainFrame()->addToJavaScriptWindowObject("connector", connector);
+    // webView->page()->mainFrame()->addToJavaScriptWindowObject("connector", connector);
 }
 void ImageSnapView::renderPage(){
-    QWebFrame* frame = webView->page()->mainFrame();
+    QWebEnginePage* frame = webView->page();
     if(renderedPage != 0){
         delete renderedPage;
     }
     renderedPage = new QImage(webView->size(), QImage::Format::Format_ARGB32) ;
     QPainter painter(renderedPage);
-    frame->render(&painter);
+    // TODO descide what to do with it
+    // frame->render(&painter);
     painter.end();
     mapImageView->showImage(renderedPage);
 }

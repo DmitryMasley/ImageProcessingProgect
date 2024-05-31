@@ -1,4 +1,5 @@
 #include "singleimageview.h"
+#include <QRegularExpression>
 
 QString SingleImageView::fileExtentions = ".*\\.jpg$|.*\\.png$|.*\\.tif$|.*\\.tiff$|.*\\.jpeg$";
 
@@ -128,8 +129,8 @@ void SingleImageView::dropEvent(QDropEvent *event)
     }
 }
 void SingleImageView::readImage(QString fileName){
-    QRegExp regex = QRegExp(SingleImageView::fileExtentions);
-    if(regex.exactMatch(fileName))
+    QRegularExpression regex = QRegularExpression(SingleImageView::fileExtentions);
+    if(regex.match(fileName).hasMatch())
     {
         cv::Mat image = ImageHelper::readImage(fileName);
         if(!!image.data && (!_gray || image.channels() == 1))
@@ -146,7 +147,7 @@ void SingleImageView::readImage(QString fileName){
 void SingleImageView::wheelEvent(QWheelEvent *event)
 {
     if(_zoomEnabled){
-        const int degrees = event->delta();
+        const int degrees = event->angleDelta().y();
         int steps  = degrees;
         if(steps>0)
         {

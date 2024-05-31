@@ -68,7 +68,7 @@ void Workspace::showImage(QModelIndex index){
     StandardImageItem* item = static_cast<StandardImageItem*>(mainModel->getItem(index));
     cv::Mat image = item->getCVImage();
     QString name = item->getFileName();
-    cv::namedWindow(ImageHelper::convertToStdString(name), CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO | CV_GUI_EXPANDED);
+    cv::namedWindow(ImageHelper::convertToStdString(name), WINDOW_NORMAL | WINDOW_KEEPRATIO | WINDOW_GUI_EXPANDED);
     cv::imshow(ImageHelper::convertToStdString(name), ImageHelper::RGB2BGR(image));
 }
 void Workspace::removeSelectedImage(){

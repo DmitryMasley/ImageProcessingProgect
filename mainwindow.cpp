@@ -10,8 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
     this->setStyleSheet("font-size:16pt");
-    qRegisterMetaTypeStreamOperators<QList<QList<QVariant> > >("QList<QList<QVariant> >");
-    qRegisterMetaTypeStreamOperators<QMap<int, QMap<int, QVariant> > >("QMap<int, QMap<int, QVariant> >");
+    // qRegisterMetaTypeStreamOperators<QList<QList<QVariant> > >("QList<QList<QVariant> >");
+    // qRegisterMetaTypeStreamOperators<QMap<int, QMap<int, QVariant> > >("QMap<int, QMap<int, QVariant> >");
     qRegisterMetaType<QMap<QString,cv::Mat> >("QMap<QString,cv::Mat>");
 
      workspaceController - new WorkspaceController();
